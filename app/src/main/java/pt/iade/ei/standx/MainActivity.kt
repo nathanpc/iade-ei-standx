@@ -14,6 +14,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import pt.iade.ei.standx.ui.components.CarListItem
 import pt.iade.ei.standx.ui.theme.StandXTheme
 
 class MainActivity : ComponentActivity() {
@@ -27,17 +28,9 @@ class MainActivity : ComponentActivity() {
     }
 }
 
-@Composable
-fun CarListItem() {
-    Column {
-        Text("Mini Cooper 1989")
-        Text("1989 - 420.000km - £ 100.000")
-    }
-}
-
 @Preview(showBackground = true)
 @Composable
-fun ListItemPreview() {
+fun MainActivityPreview() {
     StandXTheme {
         CarListItem()
     }
