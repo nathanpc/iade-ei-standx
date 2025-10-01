@@ -1,5 +1,6 @@
 package pt.iade.ei.standx.ui.components
 
+import androidx.annotation.DrawableRes
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -22,13 +23,30 @@ import pt.iade.ei.standx.R
 import pt.iade.ei.standx.ui.theme.StandXTheme
 
 @Composable
-fun CarListItem() {
+fun CarListItem(
+    make: String,
+    model: String,
+    year: Int,
+    km: Int,
+    price: Float,
+    transmission: String,
+    fuel: String,
+    seats: Int,
+    @DrawableRes imageId: Int
+) {
     Row(
-        modifier = Modifier.fillMaxWidth()
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(
+                horizontal = 10.dp,
+                vertical = 5.dp
+            )
     ) {
+        val title = "$make $model $year"
+
         Image(
-            painter = painterResource(R.drawable.mini_bean),
-            contentDescription = "Mr. Bean em cima de um Mini",
+            painter = painterResource(imageId),
+            contentDescription = title,
             modifier = Modifier
                 .padding(end = 15.dp)
                 .height(72.dp)
@@ -36,15 +54,15 @@ fun CarListItem() {
 
         Column {
             Text(
-                text = "Mini Cooper 1989",
+                text = title,
                 fontWeight = FontWeight.Bold,
                 fontSize = 18.sp
             )
 
-            Text("1989 - 420.000km - £ 100.000")
+            Text("${km}km - £ $price")
 
             Text(
-                text = "Auto | GPL | 12 px",
+                text = "$transmission | $fuel | $seats px",
                 color = Color.Gray
             )
         }
@@ -55,6 +73,16 @@ fun CarListItem() {
 @Composable
 fun ListItemPreview() {
     StandXTheme {
-        CarListItem()
+        CarListItem(
+            make = "Mini",
+            model = "Cooper",
+            year = 1989,
+            km = 420000,
+            price = 100000f,
+            transmission = "Auto",
+            fuel = "GPL",
+            seats = 12,
+            imageId = R.drawable.mini_bean
+        )
     }
 }

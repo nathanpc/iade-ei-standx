@@ -14,6 +14,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import pt.iade.ei.standx.ui.components.CarListItem
 import pt.iade.ei.standx.ui.theme.StandXTheme
 
@@ -32,6 +33,24 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun MainActivityPreview() {
     StandXTheme {
-        CarListItem()
+        Column(
+            modifier = Modifier.fillMaxSize()
+        ) {
+            Text("StandX")
+
+            for (i in 1..8) {
+                CarListItem(
+                    make = "Mini",
+                    model = "Cooper",
+                    year = 1989 + (i * 3),
+                    km = 420000 * (10 / i),
+                    price = 100000f * i,
+                    transmission = "Auto",
+                    fuel = "GPL",
+                    seats = 12 - i,
+                    imageId = R.drawable.mini_bean
+                )
+            }
+        }
     }
 }
