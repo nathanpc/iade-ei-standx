@@ -20,6 +20,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import pt.iade.ei.standx.R
+import pt.iade.ei.standx.models.CarItem
 import pt.iade.ei.standx.ui.theme.StandXTheme
 
 @Composable
@@ -69,20 +70,39 @@ fun CarListItem(
     }
 }
 
+@Composable
+fun CarListItem(
+    item: CarItem
+) {
+    CarListItem(
+        make = item.make,
+        model = item.model,
+        year = item.year,
+        km = item.km,
+        price = item.price,
+        transmission = item.transmission,
+        fuel = item.fuel,
+        seats = item.seats,
+        imageId = R.drawable.mini_bean
+    )
+}
+
 @Preview(showBackground = true)
 @Composable
 fun ListItemPreview() {
+    val item = CarItem(
+        id = 123,
+        make = "Mini",
+        model = "Cooper",
+        year = 1989,
+        km = 420000,
+        price = 100000f,
+        transmission = "Auto",
+        fuel = "GPL",
+        seats = 12
+    )
+
     StandXTheme {
-        CarListItem(
-            make = "Mini",
-            model = "Cooper",
-            year = 1989,
-            km = 420000,
-            price = 100000f,
-            transmission = "Auto",
-            fuel = "GPL",
-            seats = 12,
-            imageId = R.drawable.mini_bean
-        )
+        CarListItem(item)
     }
 }

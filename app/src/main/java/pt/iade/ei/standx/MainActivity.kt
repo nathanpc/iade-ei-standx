@@ -22,6 +22,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import pt.iade.ei.standx.models.CarItem
 import pt.iade.ei.standx.ui.components.CarListItem
 import pt.iade.ei.standx.ui.theme.StandXTheme
 
@@ -40,6 +41,18 @@ class MainActivity : ComponentActivity() {
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MainView() {
+    val item = CarItem(
+        id = 123,
+        make = "Mini",
+        model = "Cooper",
+        year = 1989,
+        km = 420000,
+        price = 100000f,
+        transmission = "Auto",
+        fuel = "GPL",
+        seats = 12
+    )
+
     Scaffold(
         topBar = {
             TopAppBar(
@@ -69,7 +82,9 @@ fun MainView() {
         Column(
             modifier = Modifier.padding(innerPadding)
         ) {
-            for (i in 1..8) {
+            CarListItem(item)
+
+            for (i in 1..6) {
                 CarListItem(
                     make = "Mini",
                     model = "Cooper",
