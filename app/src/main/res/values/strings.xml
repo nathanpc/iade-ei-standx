@@ -1,3 +1,7 @@
 <resources>
-    <string name="app_name">StandX</string>
+    <string name="app_name" translatable="false">StandX</string>
+    <string name="title_activity_car_detail">CarDetailActivity</string>
+    <string name="back">Back</string>
+    <string name="favorite">Favorite</string>
+    <string name="buy">Buy</string>
 </resources>
