@@ -1,6 +1,7 @@
 package pt.iade.ei.standx
 
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -22,6 +23,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.github.kittinunf.fuel.Fuel
+import com.github.kittinunf.fuel.httpGet
+import kotlinx.coroutines.runBlocking
 import pt.iade.ei.standx.models.CarItem
 import pt.iade.ei.standx.ui.components.CarListItem
 import pt.iade.ei.standx.ui.theme.StandXTheme
@@ -32,6 +36,12 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             StandXTheme {
+                "http://10.0.2.2:5000/cars".httpGet().response {
+                        request, response, result ->
+                    val body = response.body()
+                    Log.i("TEST", response.body().toString())
+                }
+
                 MainView()
             }
         }
