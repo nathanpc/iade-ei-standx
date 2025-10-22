@@ -20,6 +20,7 @@ import androidx.compose.material3.TopAppBarDefaults.topAppBarColors
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
@@ -30,6 +31,7 @@ import com.github.kittinunf.fuel.httpGet
 import com.google.gson.GsonBuilder
 import com.google.gson.JsonObject
 import kotlinx.coroutines.runBlocking
+import pt.iade.ei.standx.controllers.CarItemController
 import pt.iade.ei.standx.models.CarItem
 import pt.iade.ei.standx.ui.components.CarListItem
 import pt.iade.ei.standx.ui.theme.StandXTheme
@@ -44,35 +46,10 @@ class MainActivity : ComponentActivity() {
             val carsList = remember { mutableStateListOf<CarItem>() }
 
             StandXTheme {
-                "http://10.0.2.2:5000/cars".httpGet().response {
-                        request, response, result ->
-                    // Gets the JSON as a string from the server's response.
-                    val responseBody = String(response.data)
-
-                    // Setup Gson library and parse JSON object.
-                    val gson = GsonBuilder().create()
-                    val json = gson.fromJson(responseBody, JsonObject().javaClass) as JsonObject
-
-                    // Loop through cars in JSON array.
-                    val carsJson = json.getAsJsonArray("cars")
-                    for (carJson in carsJson) {
-                        val obj = carJson as JsonObject
-                        val car = CarItem(
-                            id = obj.get("id").asInt,
-                            make = obj.get("make").asString,
-                            model = obj.get("model").asString,
-                            year = obj.get("year").asInt,
-                            km = obj.get("km").asInt,
-                            price = obj.get("price").asFloat,
-                            transmission = obj.get("transmission").asString,
-                            fuel = obj.get("fuel").asString,
-                            seats = obj.get("seats").asInt
-                        )
-
+                CarItemController().GetListOfCars { list ->
+                    for (car in list) {
                         carsList.add(car)
                     }
-
-                    Log.i("TEST", responseBody)
                 }
 
                 MainView(carsList)
