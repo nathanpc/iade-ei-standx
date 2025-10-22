@@ -25,6 +25,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.github.kittinunf.fuel.Fuel
 import com.github.kittinunf.fuel.httpGet
+import com.google.gson.GsonBuilder
+import com.google.gson.JsonObject
 import kotlinx.coroutines.runBlocking
 import pt.iade.ei.standx.models.CarItem
 import pt.iade.ei.standx.ui.components.CarListItem
@@ -35,14 +37,42 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
+            // List<CarItem> carsList = new List<CarItem>();
+            val carsList = mutableListOf<CarItem>()
+
             StandXTheme {
                 "http://10.0.2.2:5000/cars".httpGet().response {
                         request, response, result ->
-                    val body = response.body()
-                    Log.i("TEST", response.body().toString())
+                    // Gets the JSON as a string from the server's response.
+                    val responseBody = String(response.data)
+
+                    // Setup Gson library and parse JSON object.
+                    val gson = GsonBuilder().create()
+                    val json = gson.fromJson(responseBody, JsonObject().javaClass) as JsonObject
+
+                    // Loop through cars in JSON array.
+                    val carsJson = json.getAsJsonArray("cars")
+                    for (carJson in carsJson) {
+                        val obj = carJson as JsonObject
+                        val car = CarItem(
+                            id = obj.get("id").asInt,
+                            make = obj.get("make").asString,
+                            model = obj.get("model").asString,
+                            year = obj.get("year").asInt,
+                            km = obj.get("km").asInt,
+                            price = obj.get("price").asFloat,
+                            transmission = obj.get("transmission").asString,
+                            fuel = obj.get("fuel").asString,
+                            seats = obj.get("seats").asInt
+                        )
+
+                        carsList.add(car)
+                    }
+
+                    Log.i("TEST", responseBody)
                 }
 
-                MainView()
+                MainView(carsList)
             }
         }
     }
@@ -50,19 +80,9 @@ class MainActivity : ComponentActivity() {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MainView() {
-    val item = CarItem(
-        id = 123,
-        make = "Mini",
-        model = "Cooper",
-        year = 1989,
-        km = 420000,
-        price = 100000f,
-        transmission = "Auto",
-        fuel = "GPL",
-        seats = 12
-    )
-
+fun MainView(
+    carsList: List<CarItem>
+) {
     Scaffold(
         topBar = {
             TopAppBar(
@@ -92,20 +112,8 @@ fun MainView() {
         Column(
             modifier = Modifier.padding(innerPadding)
         ) {
-            CarListItem(item)
-
-            for (i in 1..6) {
-                CarListItem(
-                    make = "Mini",
-                    model = "Cooper",
-                    year = 1989 + (i * 3),
-                    km = 420000 * (10 / i),
-                    price = 100000f * i,
-                    transmission = "Auto",
-                    fuel = "GPL",
-                    seats = 12 - i,
-                    imageId = R.drawable.mini_bean
-                )
+            for (car in carsList) {
+                CarListItem(car)
             }
         }
     }
@@ -114,7 +122,33 @@ fun MainView() {
 @Preview(showBackground = true)
 @Composable
 fun MainActivityPreview() {
+    // Created a fake list.
+    val carsList = mutableListOf<CarItem>(
+        CarItem(
+            id = 123,
+            make = "Mini",
+            model = "Cooper",
+            year = 1989,
+            km = 420000,
+            price = 100000f,
+            transmission = "Auto",
+            fuel = "GPL",
+            seats = 12)
+    )
+    for (i in 1..6) {
+        carsList.add(CarItem(
+            make = "Mini",
+            model = "Cooper",
+            year = 1989 + (i * 3),
+            km = 420000 * (10 / i),
+            price = 100000f * i,
+            transmission = "Auto",
+            fuel = "GPL",
+            seats = 12 - i
+        ))
+    }
+
     StandXTheme {
-        MainView()
+        MainView(carsList)
     }
 }
