@@ -25,6 +25,17 @@ def list_cars():
                 'seats': 7
             },
             {
+                'id': 78,
+                'make': 'Mega',
+                'model': 'Cooper',
+                'year': '2050',
+                'km': 0,
+                'price': 2345678000,
+                'transmission': 'Quantum',
+                'fuel': 'Plutonium',
+                'seats': 100
+            },
+            {
                 'id': 123,
                 'make': 'Mini',
                 'model': 'Cooper',

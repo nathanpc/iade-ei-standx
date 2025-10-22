@@ -18,6 +18,8 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults.topAppBarColors
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
@@ -38,7 +40,8 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             // List<CarItem> carsList = new List<CarItem>();
-            val carsList = mutableListOf<CarItem>()
+            // val carsList = mutableListOf<CarItem>()
+            val carsList = remember { mutableStateListOf<CarItem>() }
 
             StandXTheme {
                 "http://10.0.2.2:5000/cars".httpGet().response {
